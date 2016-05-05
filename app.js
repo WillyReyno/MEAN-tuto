@@ -10,6 +10,11 @@ app.config([
                 url: '/home',
                 templateUrl: '/home.html',
                 controller: 'MainCtrl'
+            })
+            .state('posts', {
+                url: '/posts/{id}',
+                templateUrl: '/posts.html',
+                controller: 'PostsCtrl'
             });
 
         $urlRouterProvider.otherwise('home');
@@ -19,7 +24,11 @@ app.config([
 app.factory('posts', [ function() {
 
     var o = {
-        posts: []
+        posts: [
+            {
+                title: 'Post 1', link: 'http://google.fr', upvotes:0, comments: []
+            }
+        ]
     };
 
     return o;
@@ -39,7 +48,11 @@ app.controller('MainCtrl', [
             $scope.posts.push({
                 title: $scope.title,
                 link: $scope.link,
-                upvotes: 0
+                upvotes: 0,
+                comments: [
+                    {author: 'Willy', body: 'Super !', upvotes: 0},
+                    {author: 'John', body: 'Ouah je sais pas quoi dire :o', upvotes: 0}
+                ]
             });
 
             $scope.title = '';
@@ -51,3 +64,31 @@ app.controller('MainCtrl', [
         };
 
     }]);
+
+app.controller('PostsCtrl', [
+    '$scope', '$stateParams', 'posts',
+    function($scope, $stateParams, posts) {
+
+        $scope.post = posts.posts[$stateParams.id];
+
+        $scope.addComment = function() {
+            if($scope.body === '') { return; }
+
+            console.log($scope.post);
+
+            $scope.post.comments.push({
+                author: 'user',
+                body: $scope.body,
+                upvotes: 0
+            });
+
+            $scope.body = '';
+        };
+
+        $scope.incrementUpvotes = function(comment) {
+            comment.upvotes +=1;
+        };
+
+
+    }
+]);
