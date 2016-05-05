@@ -1,17 +1,20 @@
 var app = angular.module('flapperNews', []);
 
+app.factory('posts', [ function() {
+
+    var o = {
+        posts: []
+    };
+
+    return o;
+}]);
+
 app.controller('MainCtrl', [
-    '$scope',
-    function($scope) {
+    '$scope', 'posts',
+    function($scope, posts) {
         $scope.test = 'Hello world!';
 
-        $scope.posts = [
-            {title: 'post 1', upvotes: 15},
-            {title: 'post 2', upvotes: 24},
-            {title: 'post 3', upvotes: 18},
-            {title: 'post 4', upvotes: 8},
-            {title: 'post 5', upvotes: 1}
-        ];
+        $scope.posts = posts.posts;
 
         $scope.addPost = function() {
 
