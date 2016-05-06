@@ -34,11 +34,7 @@ app.config([
 app.factory('posts', ['$http',function($http) {
 
     var o = {
-        posts: [
-            {
-                title: 'Post 1', link: 'http://google.fr', upvotes:0, comments: []
-            }
-        ]
+        posts: []
     };
 
     o.getAll = function() {
